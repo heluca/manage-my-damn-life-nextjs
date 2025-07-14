@@ -38,20 +38,25 @@ export default async function handler(req, res) {
                 var password = req.body.password
                 var accountname = validator.escape(req.body.accountname)
                 var response={} //final response of the api
-                const client =  await createDAVClient({
-                    serverUrl: url,
-                    credentials: {
-                        username: username,
-                        password: password
-                    },
-                    authMethod:authMethod,
-                    defaultAccountType: 'caldav',
-                }).catch((reason)=>{
+                let client
+                try {
+                    client = await createDAVClient({
+                        serverUrl: url,
+                        credentials: {
+                            username: username,
+                            password: password
+                        },
+                        authMethod: authMethod,
+                        defaultAccountType: 'caldav',
+                    })
+                } catch (reason) {
                     logError(reason, "api/caldav/register client:")
-                    return res.status(401).json({ success: false, data: {message: reason.message}})
-
-
-                })
+                    let errorMessage = 'CALDAV_CONNECTION_FAILED'
+                    if (reason.message && reason.message.includes('homeUrl')) {
+                        errorMessage = 'CALDAV_DISCOVERY_FAILED - Check if the URL supports CalDAV auto-discovery'
+                    }
+                    return res.status(401).json({ success: false, data: { message: errorMessage } })
+                }
                 if(client!=null && typeof(client)== 'object')
                 {
                     const calendars = await client.fetchCalendars()

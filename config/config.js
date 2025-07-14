@@ -1,5 +1,5 @@
 const dotenv = require('dotenv')
-dotenv.config({ override: true });
+dotenv.config({ path: '.env.local', override: true });
 const dialect = process.env.DB_DIALECT ?? "mysql"
 module.exports = {
   local: {
@@ -7,7 +7,7 @@ module.exports = {
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
+    port: parseInt(process.env.DB_PORT) || 5432,
     dialect: dialect
   },
   sqlite:{
