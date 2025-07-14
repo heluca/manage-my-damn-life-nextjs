@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import { initAutoSync, shouldSync } from '@/helpers/frontend/sync';
 import { UserConfig } from 'next-i18next';
 import { appWithTranslation } from 'next-i18next';
+import { ThemeProvider } from '@/components/ThemeProvider';
 
 import * as nextI18NextConfig from '@/../next-i18next.config'
 
@@ -37,9 +38,11 @@ function App({ Component, pageProps: {session, ...pageProps }}) {
 
   return (
         <SessionProvider session={session} refetchOnWindowFocus={true}>
-          <NextNProgress  color="#ff0000"  height={5} options={{ showSpinner: false }}/>
-            <Component {...pageProps} />
-          <Toastify />
+          <ThemeProvider>
+            <NextNProgress  color="#ff0000"  height={5} options={{ showSpinner: false }}/>
+              <Component {...pageProps} />
+            <Toastify />
+          </ThemeProvider>
         </SessionProvider>
     )
 }

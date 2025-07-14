@@ -17,6 +17,15 @@ export default async function handler(req, res) {
     
                 }
 
+                const { name } = req.query;
+                
+                if (name) {
+                    // Get specific setting
+                    const value = await Settings.getForUser(userid, name);
+                    return res.status(200).json({ success: true, data: { name, value } });
+                }
+                
+                // Get all settings (existing behavior)
                 const userObj = new User(userid)
                 const isAdmin= await userObj.isAdmin()
                 const settingKeys = await Settings.getAllforUserid(userid)

@@ -1,4 +1,4 @@
-import { PRIMARY_COLOUR } from "@/config/style";
+
 import { useRouter } from "next/router";
 import { Button, Container, Form, NavItem, NavLink, OverlayTrigger, Spinner, Tooltip } from "react-bootstrap";
 import React, { useEffect, useState } from 'react';
@@ -176,7 +176,6 @@ const AppBarFunctionalComponent = ({ session}) => {
     );
   }
 
-  const navVariant = darkModeEnabled ? "light": "dark"
   let langOption:JSX.Element[] = []
   for(const i in AVAILABLE_LANGUAGES){
     langOption.push(      <option value={AVAILABLE_LANGUAGES[i]}>{AVAILABLE_LANGUAGES[i]}</option>)
@@ -184,7 +183,7 @@ const AppBarFunctionalComponent = ({ session}) => {
   return (
     <>
       {notInstalledBanner}
-      <Navbar  variant={navVariant} className="nav-pills nav-fill" style={{ background: PRIMARY_COLOUR, padding: 20,  }} sticky="top" expand="lg">
+      <Navbar bg="primary" variant="dark" className="nav-pills nav-fill" style={{ padding: 20 }} sticky="top" expand="lg">
         <Navbar.Brand onClick={logoClicked}>
           <Image
             src="/logo.png"

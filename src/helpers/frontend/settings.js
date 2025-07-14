@@ -43,22 +43,23 @@ export function saveLabelArrayToCookie(labels)
     }
 }
 export function getCalendarStartDay(){
-    const startDay= localStorage.getItem(SETTING_NAME_CALENDAR_START_DAY)
+    const startDay = localStorage.getItem(SETTING_NAME_CALENDAR_START_DAY)
     
-    if(isNaN(startDay)){
-        return "1"
+    if(!startDay || startDay === null){
+        return 1
     }
 
     try{
         const startDayInt = parseInt(startDay)
+        if(isNaN(startDayInt) || startDayInt < 0 || startDayInt > 6){
+            return 1
+        }
         return startDayInt
     }catch(e){
         console.warn("getCalendarStartDay",e)
     }
   
-    return "1"
-
-
+    return 1
 }
 export function getLabelArrayFromCookie()
 {

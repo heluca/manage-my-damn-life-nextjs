@@ -28,6 +28,7 @@ import { isDarkModeEnabled } from "@/helpers/frontend/theme";
 import { TimeFormatSetting } from "./TimeFormatSetting";
 import AdvancedSettings from "./AdvancedSettings";
 import ToastSettings from "./ToastSettings";
+import ThemeSelector from "@/components/settings/ThemeSelector";
 class SettingsPage extends Component {
 
     constructor(props) {
@@ -391,6 +392,15 @@ class SettingsPage extends Component {
                         <br />
                         <CalendarStartDayWeek />
                         </div>
+                        <br />
+                        <Row style={{display: "flex", alignItems: "center"}}>
+                            <Col xs={3}>
+                                {this.i18next("THEME")}
+                            </Col>
+                            <Col xs={9}>
+                                <ThemeSelector />
+                            </Col>
+                        </Row>
                         <br />
                         <AutoSyncSetting />
                         <br />
