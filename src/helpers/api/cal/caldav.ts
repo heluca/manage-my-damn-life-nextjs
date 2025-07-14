@@ -59,6 +59,11 @@ export interface eventAddResultType_Success{
 export async function getCaldavClient(caldav_account_id)
 {
     var caldavClientDetails=await getCaldavAccountDetailsfromId(caldav_account_id)
+    
+    if (!caldavClientDetails[0].password) {
+        throw new Error('CalDAV account password is missing');
+    }
+    
     const client =  await createDAVClient({
         serverUrl: caldavClientDetails[0].url!,
         credentials: {
@@ -302,6 +307,10 @@ export async function createEventinCalDAVAccount(url, caldav_accounts_id, calend
     return new Promise( (resolve, reject) => {
         if(isValidCaldavAccount(caldav_account))
     {
+         if (!caldav_account[0].password) {
+            return resolve({result: {status: 500, error:"CalDAV account password is missing", statusText:"CalDAV account password is missing"}, client:null})
+         }
+         
          createDAVClient({
             serverUrl: caldav_account[0].url!,
             credentials: {
@@ -347,6 +356,10 @@ export async function updateEventinCalDAVAccount(caldav_accounts_id,  event):Pro
     return new Promise( (resolve, reject) => {
         if(isValidCaldavAccount(caldav_account))
         {
+           if (!caldav_account[0].password) {
+                return resolve({result: {status: 500, error:"CalDAV account password is missing", statusText:"CalDAV account password is missing"}, client:null})
+           }
+           
            createDAVClient({
                 serverUrl: caldav_account[0].url!,
                 credentials: {
@@ -360,7 +373,7 @@ export async function updateEventinCalDAVAccount(caldav_accounts_id,  event):Pro
                     calendarObject: event,
                     headers:getBasicAuthHeaders({
                         username: caldav_account[0].username,
-                        password: AES.decrypt(caldav_account[0].password,process.env.AES_PASSWORD).toString(CryptoJS.enc.Utf8) 
+                        password: AES.decrypt(caldav_account[0].password!,process.env.AES_PASSWORD).toString(CryptoJS.enc.Utf8) 
         
                     })
                   }).then(result =>{
