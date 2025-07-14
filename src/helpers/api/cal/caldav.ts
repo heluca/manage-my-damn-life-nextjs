@@ -6,6 +6,7 @@ import { getRandomString } from '@/helpers/crypto';
 import { syncEventsWithCaldlav } from './object';
 import { AES } from 'crypto-js';
 import CryptoJS from "crypto-js"
+import crypto from 'crypto';
 import { logError, varNotEmpty } from '@/helpers/general';
 import ical from '@/../ical/ical'
 import { parseICSWithICALJS } from '../ical';
@@ -14,6 +15,30 @@ import { calendar_events } from 'models/calendar_events';
 
 const caldav_accountsModel = caldav_accounts.initModel(getSequelizeObj())
 const calendar_eventsModel = calendar_events.initModel(getSequelizeObj())
+
+// Helper function to decrypt CalDAV passwords
+function decryptCalDAVPassword(encryptedPassword: string): string {
+    if (!process.env.AES_PASSWORD) {
+        throw new Error('AES_PASSWORD environment variable is required');
+    }
+    
+    try {
+        // Handle both old and new encryption formats
+        if (encryptedPassword.includes(':')) {
+            // New format with IV
+            const [ivHex, encrypted] = encryptedPassword.split(':');
+            const decipher = crypto.createDecipher('aes-256-cbc', process.env.AES_PASSWORD);
+            let decrypted = decipher.update(encrypted, 'hex', 'utf8');
+            decrypted += decipher.final('utf8');
+            return decrypted;
+        } else {
+            // Fallback to old CryptoJS format
+            return AES.decrypt(encryptedPassword, process.env.AES_PASSWORD).toString(CryptoJS.enc.Utf8);
+        }
+    } catch (error) {
+        throw new Error('Failed to decrypt CalDAV password');
+    }
+}
 
 export interface eventAddResultType_Error{
     status: number, 
@@ -38,7 +63,7 @@ export async function getCaldavClient(caldav_account_id)
         serverUrl: caldavClientDetails[0].url!,
         credentials: {
             username: caldavClientDetails[0].username,
-            password: AES.decrypt(caldavClientDetails[0].password,process.env.AES_PASSWORD).toString(CryptoJS.enc.Utf8)
+            password: decryptCalDAVPassword(caldavClientDetails[0].password)
         },
         authMethod: 'Basic',
         defaultAccountType: 'caldav',
@@ -50,7 +75,17 @@ export async function getCaldavClient(caldav_account_id)
 
 export async function createCalDAVAccount(accountname, username, password, url, userid)
 {
-    const encryptedPass = AES.encrypt(password, process.env.AES_PASSWORD).toString()
+    if (!process.env.AES_PASSWORD) {
+        throw new Error('AES_PASSWORD environment variable is required');
+    }
+    
+    // Use a more secure encryption method with IV
+    const iv = crypto.randomBytes(16);
+    const cipher = crypto.createCipher('aes-256-cbc', process.env.AES_PASSWORD);
+    let encrypted = cipher.update(password, 'utf8', 'hex');
+    encrypted += cipher.final('hex');
+    const encryptedPass = iv.toString('hex') + ':' + encrypted;
+    
     await caldav_accountsModel.create({ name: accountname, username: username, password:encryptedPass, url:url, userid:userid });
     return 
     // var con = getConnectionVar()

@@ -6,27 +6,58 @@ import { middleWareForAuthorisation, getUseridFromUserhash, getUserHashSSIDfromA
 import { createCalDAVAccount } from '@/helpers/api/cal/caldav';
 import { AES } from 'crypto-js';
 import { logError, logVar } from '@/helpers/general';
+import { rateLimit, rateLimitConfigs } from '@/helpers/security/rateLimiting';
+import { setSecurityHeaders } from '@/helpers/security/headers';
+import { validateCalDAVAccount, sanitizeObject, isValidCalDAVUrl } from '@/helpers/security/validation';
+import { csrfProtection } from '@/helpers/security/csrf';
 export default async function handler(req, res) {
+    // Apply security headers
+    setSecurityHeaders(res);
+    
     if (req.method === 'GET') {
+        // Apply rate limiting
+        if (!rateLimit(rateLimitConfigs.caldav)(req, res)) {
+            return;
+        }
+        
+        // Apply CSRF protection
+        if (!csrfProtection(req, res)) {
+            return;
+        }
 
         if(await middleWareForAuthorisation(req,res))
         {
             const userid =  await getUserIDFromLogin(req, res)
             if(userid==null){
                 return res.status(401).json({ success: false, data: { message: 'PLEASE_LOGIN'} })
-
             }
 
-            if(req.query.url!=null && req.query.username!=null && req.query.accountname!=null &&req.query.password!=null)
+            // Sanitize and validate input
+            const sanitizedQuery = sanitizeObject(req.query);
+            const validation = validateCalDAVAccount({
+                url: sanitizedQuery.url,
+                username: sanitizedQuery.username,
+                password: req.query.password, // Don't sanitize password
+                accountname: sanitizedQuery.accountname
+            });
+            
+            if (!validation.valid) {
+                return res.status(422).json({ 
+                    success: false, 
+                    data: { message: 'INVALID_INPUT', errors: validation.errors } 
+                });
+            }
+
+            if(sanitizedQuery.url && sanitizedQuery.username && sanitizedQuery.accountname && req.query.password)
             {
-                if ((req.query.url!=null&&validator.isURL(req.query.url)) || req.query.url.startsWith("http://localhost") || req.query.url.startsWith("https://localhost") ){
-                    if(req.query.username!=null&&req.query.password!=null)
+                if (isValidCalDAVUrl(sanitizedQuery.url)){
+                    if(sanitizedQuery.username && req.query.password)
                     {
 
-                        var url = req.query.url
-                        var username = validator.escape(req.query.username)
+                        var url = sanitizedQuery.url
+                        var username = sanitizedQuery.username
                         var password = req.query.password
-                        var accountname = validator.escape(req.query.accountname)
+                        var accountname = sanitizedQuery.accountname
                         var response={} //final response of the api
                         const client =  await createDAVClient({
                             serverUrl: url,
