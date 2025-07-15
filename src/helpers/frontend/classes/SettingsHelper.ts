@@ -1,7 +1,7 @@
 import { getAPIURL, logError, logVar, varNotEmpty } from "@/helpers/general";
 import axios from "axios";
 import { getAuthenticationHeadersforUser } from "../user";
-import { getErrorResponse } from "@/helpers/errros";
+import { getErrorResponse } from "@/helpers/errors";
 import { getMessageFromAPIResponse } from "../response";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";

@@ -5,7 +5,7 @@ import { getAPIURL, isValidObject, isValidResultArray, logError, logVar, varNotE
 import { majorTaskFilter } from "./events";
 import * as _ from 'lodash'
 import { VTODO } from "./classes/VTODO";
-import { getErrorResponse } from "../errros";
+import { getErrorResponse } from "../errors";
 import { getParsedAlarmsFromTodo } from "./VTODOHelpers";
 export async function getCaldavAccountsfromServer()
 {

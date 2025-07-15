@@ -91,7 +91,12 @@ const Register = () => {
                     toast.error(t(message));
                 }
             } else {
-                toast.error(t("ERROR_GENERIC"));
+                // Show specific validation errors if available
+                if (body?.data?.errors && Array.isArray(body.data.errors)) {
+                    body.data.errors.forEach(error => toast.error(error));
+                } else {
+                    toast.error(t("ERROR_GENERIC"));
+                }
             }
         } catch (e) {
             toast.error(t("ERROR_GENERIC"));
@@ -145,6 +150,9 @@ const Register = () => {
                         maxLength={40}
                         placeholder={t("ENTER_A_PASSWORD")}
                     />
+                    <small className="text-muted">
+                        Password must be at least 8 characters and include uppercase, lowercase, number, and any special character
+                    </small>
                     <br />
                     <Form.Control
                         onChange={(e) => setPasswordConfirm(e.target.value)}

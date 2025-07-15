@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { getErrorResponse } from "../errros";
+import { getErrorResponse } from "../errors";
 import { getAPIURL } from "../general";
 import { getAuthenticationHeadersforUser } from "./user";
 

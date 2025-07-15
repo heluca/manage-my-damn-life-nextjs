@@ -4,8 +4,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('accounts', {
       id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
+        type: Sequelize.STRING,
         primaryKey: true,
       },
       type: { type: Sequelize.STRING, allowNull: false },
@@ -18,15 +17,14 @@ module.exports = {
       scope: { type: Sequelize.STRING },
       id_token: { type: Sequelize.TEXT },
       session_state: { type: Sequelize.STRING },
-      user_id: { type: Sequelize.UUID },
+      user_id: { type: Sequelize.STRING },
       createdAt: {
         type: Sequelize.DATE,
-        defaultValue:Sequelize.fn('now'),
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
       updatedAt: {
         type: Sequelize.DATE,
-        defaultValue:Sequelize.fn('now'),
-
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       }
     });
   },

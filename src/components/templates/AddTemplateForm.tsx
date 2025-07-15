@@ -12,7 +12,7 @@ import { getAPIURL } from "@/helpers/general"
 import { getAuthenticationHeadersforUser } from "@/helpers/frontend/user"
 import { Loading } from "../common/Loading"
 import { RequestOptions } from "https"
-import { getErrorResponse } from "@/helpers/errros"
+import { getErrorResponse } from "@/helpers/errors"
 
 export default function AddTemplateForm({closeAddForm}:{closeAddForm: Function}){
 

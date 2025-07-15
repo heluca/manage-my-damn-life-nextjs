@@ -7,8 +7,6 @@ module.exports = {
       
               queryInterface.addColumn("users", "emailVerified",{
                 type: Sequelize.DATE,
-                defaultValue: Sequelize.Sequelize.UUIDV4,
-            
               },
               {transaction: t}),
               queryInterface.addColumn("sessions", "sessionToken",{
@@ -17,7 +15,7 @@ module.exports = {
                 allowNull: true,
             }, {transaction: t}),
               queryInterface.addColumn("sessions", "userId",{
-                type: Sequelize.UUID
+                type: Sequelize.STRING
             }, {transaction: t}),
             queryInterface.createTable('verification_tokens', {
                 token: { type: Sequelize.STRING, primaryKey: true },
@@ -28,7 +26,7 @@ module.exports = {
                 type: Sequelize.STRING,
             }, {transaction: t}),
             queryInterface.addColumn("accounts", "userId",{
-                type: Sequelize.UUID
+                type: Sequelize.STRING
             }, {transaction: t}),
 
             ]);

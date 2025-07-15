@@ -6,8 +6,7 @@ module.exports = {
       id: {
         allowNull: false,
         primaryKey: true,
-        defaultValue: Sequelize.UUIDV4,
-        type: Sequelize.UUID
+        type: Sequelize.STRING
       },
       timestamp: {
         type: Sequelize.DATE
@@ -18,17 +17,17 @@ module.exports = {
         unique: "sessionToken",
         allowNull: false,      },
         user_id: {
-        type: Sequelize.UUID
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue:Sequelize.fn('now')
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue:Sequelize.fn('now')
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       }
     });
   },

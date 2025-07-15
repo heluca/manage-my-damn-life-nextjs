@@ -1,6 +1,6 @@
 import { getAPIURL, logVar } from "@/helpers/general";
 import { getAuthenticationHeadersforUser } from "../user";
-import { getErrorResponse } from "@/helpers/errros";
+import { getErrorResponse } from "@/helpers/errors";
 
 export class FilterHelper{
 

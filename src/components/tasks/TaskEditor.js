@@ -24,7 +24,7 @@ import { RRuleHelper } from "@/helpers/frontend/classes/RRuleHelper";
 import * as _ from 'lodash'
 import { VTODO } from "@/helpers/frontend/classes/VTODO";
 import { getStandardDateFormat } from "@/helpers/frontend/settings";
-import { getErrorResponse } from "@/helpers/errros";
+import { getErrorResponse } from "@/helpers/errors";
 import { getCalDAVSummaryFromDexie } from "@/helpers/frontend/dexie/caldav_dexie";
 import { getAllLabelsFromDexie } from "@/helpers/frontend/dexie/dexie_labels";
 import { getCalDAVAccountIDFromCalendarID_Dexie, getCalendarbyIDFromDexie, isValidCalendarsID } from "@/helpers/frontend/dexie/calendars_dexie";

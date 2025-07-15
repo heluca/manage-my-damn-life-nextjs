@@ -60,7 +60,7 @@ export function validateUserRegistration(input: UserRegistrationInput): { valid:
     errors.push('Password must be at least 8 characters');
   }
   
-  if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/.test(input.password)) {
+  if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,}$/.test(input.password)) {
     errors.push('Password must contain uppercase, lowercase, number, and special character');
   }
   

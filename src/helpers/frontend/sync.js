@@ -1,5 +1,5 @@
 import { toast } from "react-toastify"
-import { getErrorResponse } from "../errros"
+import { getErrorResponse } from "../errors"
 import { getAPIURL, isValidResultArray, logVar } from "../general"
 import { caldavAccountsfromServer } from "./calendar"
 import { getAuthenticationHeadersforUser } from "./user"

@@ -7,9 +7,7 @@ module.exports = {
       return Promise.all([
 
         queryInterface.addColumn("users", "id",{
-          type: Sequelize.DataTypes.UUID,
-          defaultValue: Sequelize.DataTypes.UUIDV4,
-      
+          type: Sequelize.DataTypes.STRING,
         },
         {transaction: t}),
         queryInterface.addColumn("users", "expires",{

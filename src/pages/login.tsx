@@ -13,7 +13,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { getAuthenticationHeadersforUser, setLoginCookie } from '@/helpers/frontend/user';
 import { getMessageFromAPIResponse } from '@/helpers/frontend/response';
 import { getAPIURL, logVar } from '@/helpers/general';
-import { getErrorResponse } from '@/helpers/errros';
+import { getErrorResponse } from '@/helpers/errors';
 import { fetchLatestEvents, fetchLatestEventsV2, refreshCalendarListV2 } from '@/helpers/frontend/sync';
 import { setUserNameCookie } from '@/helpers/frontend/cookies';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';

@@ -72,7 +72,7 @@ module.exports = {
         allowNull: true
       }
   
-    })
+    });
 
     await queryInterface.createTable('calendar_events', {
       calendar_events_id: {
@@ -110,7 +110,7 @@ module.exports = {
         allowNull: true
       }
   
-    })
+    });
 
     await queryInterface.createTable('calendars', {
       calendars_id: {
@@ -163,7 +163,7 @@ module.exports = {
         type: Sequelize.STRING(45),
         allowNull: true
       }  
-    })
+    });
 
     await queryInterface.createTable('custom_filters', {
       custom_filters_id: {
@@ -185,7 +185,7 @@ module.exports = {
         allowNull: true
       }
   
-    })
+    });
 
     await queryInterface.createTable('labels', {
       labels_id: {
@@ -206,7 +206,7 @@ module.exports = {
         type: Sequelize.STRING(45),
         allowNull: true
       }  
-    })
+    });
 
     await queryInterface.createTable('otp_table', {
       otp_table_id: {
@@ -236,7 +236,7 @@ module.exports = {
         allowNull: true
       }
   
-    })
+    });
 
     await queryInterface.createTable('settings', {
       settings_id: {
@@ -284,7 +284,7 @@ module.exports = {
         allowNull: true
       }
   
-    })
+    });
 
   },
   async down (queryInterface, Sequelize) {

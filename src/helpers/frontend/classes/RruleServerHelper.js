@@ -6,7 +6,7 @@ import * as _ from 'lodash'
 import { getMessageFromAPIResponse } from "../response"
 import axios from "axios"
 import { headers } from "../../../../next.config"
-import { getErrorResponse } from "@/helpers/errros"
+import { getErrorResponse } from "@/helpers/errors"
 
 
 const default_RepeatMeta_instance = { done: false, due: "" }

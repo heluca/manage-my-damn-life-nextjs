@@ -4,7 +4,7 @@ import { getUserDB } from './db';
 import { objectArrayHasKey, getRandomColourCode} from './general';
 import { getAuthenticationHeadersforUser } from './user';
 import { getLabelArrayFromCookie, saveLabelArrayToCookie } from './settings';
-import { getErrorResponse } from '../errros';
+import { getErrorResponse } from '../errors';
 
 export async function saveLabeltoDB(label)
 {
