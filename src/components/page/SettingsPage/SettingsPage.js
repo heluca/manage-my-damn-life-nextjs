@@ -29,6 +29,8 @@ import { TimeFormatSetting } from "./TimeFormatSetting";
 import AdvancedSettings from "./AdvancedSettings";
 import ToastSettings from "./ToastSettings";
 import ThemeSelector from "@/components/settings/ThemeSelector";
+import LogoSettings from "@/components/settings/LogoSettings";
+import NavbarLinksSettings from "@/components/settings/NavbarLinksSettings";
 class SettingsPage extends Component {
 
     constructor(props) {
@@ -402,12 +404,18 @@ class SettingsPage extends Component {
                             </Col>
                         </Row>
                         <br />
+                        <LogoSettings />
+                        <br />
                         <AutoSyncSetting />
                         <br />
                         <ToastSettings />
                         <br />
                         <h2>{this.i18next("DATE_TIME_FORMAT")}</h2>
                         <TimeFormatSetting />
+                        
+                        <br />
+                        <h2>{this.i18next("NAVBAR_SETTINGS")}</h2>
+                        <NavbarLinksSettings />
                         
                         <br />
                         <br />

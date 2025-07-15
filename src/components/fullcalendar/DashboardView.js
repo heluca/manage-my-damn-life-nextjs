@@ -8,7 +8,7 @@ import { getAllEvents, getCaldavAccountsfromServer, getParsedTodoList, returnGet
 import { isValidResultArray, varNotEmpty } from "@/helpers/general";
 import bootstrap5Plugin from '@fullcalendar/bootstrap5';
 import Form from 'react-bootstrap/Form';
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Button } from "react-bootstrap";
 import { getEmptyEventDataObject, getParsedEvent, isAllDayEvent, majorTaskFilter, rruleToObject, updateEvent } from "@/helpers/frontend/events";
 import bootstrap from "@fullcalendar/bootstrap";
 import interactionPlugin from '@fullcalendar/interaction'
@@ -32,6 +32,7 @@ import { fetchAllEventsFromDexie } from "@/helpers/frontend/dexie/events_dexie";
 import { getEventsFromDexie_LikeAPI } from "@/helpers/frontend/dexie/dexie_helper";
 import { getCalDAVAccountIDFromCalendarID_Dexie } from "@/helpers/frontend/dexie/calendars_dexie";
 import { fetchLatestEventsV2 } from "@/helpers/frontend/sync";
+import { ForceSync } from "./ForceSync";
 
 class DashboardView extends Component {
     calendarRef = React.createRef()
@@ -158,13 +159,10 @@ class DashboardView extends Component {
 
     }
     viewChanged(e) {
-
-
-        let calendarApi = this.calendarRef.current.getApi()
-        calendarApi.changeView(e.target.value)
-
-        //calendarApi.addEventSource({events})
-        this.setState({ viewValue: e.target.value, })
+        const selectedView = e.target.value;
+        let calendarApi = this.calendarRef.current.getApi();
+        calendarApi.changeView(selectedView);
+        this.setState({ viewValue: selectedView });
     }
 
     getViewValueFromName(viewName) {
@@ -350,7 +348,7 @@ class DashboardView extends Component {
     async addEventsToCalendar(allEvents) {
         var finalEvents = []
         this.allEvents = {}
-        // console.log("allEvents", allEvents)
+        console.log("Calendar events loaded:", allEvents)
         if (isValidResultArray(allEvents)) {
 
             for (let i = 0; i < allEvents.length; i++) {
@@ -578,11 +576,16 @@ class DashboardView extends Component {
         }
 
         this.setState({ events: finalEvents })
-
+        
+        // Show a message if no events were found
+        if (finalEvents.length === 0) {
+            console.log("No events found to display in calendar")
+        }
     }
     async getAllEventsfromServer() {
+        console.log("Fetching events from server...")
         getEventsFromDexie_LikeAPI().then(allEvents =>{
-            // console.log("allEvents", allEvents)
+            console.log("Events fetched:", allEvents ? allEvents.length : 0, "calendar accounts")
             this.setState({ allEventsFromServer: allEvents })
             this.addEventsToCalendar(allEvents)
 
@@ -616,6 +619,7 @@ class DashboardView extends Component {
     }
     render() {
         const eventDataDashBoard = this.state.eventDataDashBoard
+        const hasEvents = this.state.events && this.state.events.length > 0
         var eventEditor = this.state.showEventEditor ? (<EventEditor key={this.state.selectedID} onDismiss={this.eventEditorDismissed} eventData={eventDataDashBoard} />
         ) : (null)
 
@@ -632,25 +636,44 @@ class DashboardView extends Component {
 
             <Row style={{ padding: 20, flex: 1, justifyContent: "center", alignItems: "center", }} >
                 <Col>
-                    <Form.Select value={this.state.viewValue} onChange={this.viewChanged}>
-                        {options}
-                    </Form.Select>
+                    <Form.Group className="view-radio-group">
+                        {FULLCALENDAR_VIEWLIST.map(view => (
+                            <Form.Check
+                                key={view.name}
+                                type="radio"
+                                id={`view-radio-${view.name}`}
+                                name="calendarViewRadioGroup"
+                                label={this.i18next.t(view.saneName)}
+                                value={view.name}
+                                checked={this.state.viewValue === view.name}
+                                onChange={this.viewChanged}
+                                className="me-3 d-inline-block"
+                            />
+                        ))}
+                    </Form.Group>
                 </Col>
-                <Col style={{}}>
-
-                    <Form.Check
-                        type="switch"
-                        id="show_tasks_switch"
-                        checked={this.state.showTasksChecked}
-                        onClick={this.showTasksChanged}
-                        label={this.i18next.t("SHOW_TASKS")}
-                    />
-
+                <Col>
+                    <div className="d-flex align-items-center">
+                        <Form.Check
+                            type="switch"
+                            id="show_tasks_switch"
+                            checked={this.state.showTasksChecked}
+                            onClick={this.showTasksChanged}
+                            label={this.i18next.t("SHOW_TASKS")}
+                        />
+                        <ForceSync onSyncComplete={this.getAllEventsfromServer} />
+                    </div>
                 </Col>
-                <Col style={{ textAlign: "center", }}>
+                <Col style={{ textAlign: "center" }}>
                     {calendarsSelect}
                 </Col>
             </Row>
+            {!hasEvents && this.state.caldav_accounts && (
+                <div className="alert alert-info mt-3">
+                    <h5>{this.i18next.t("NO_EVENTS_FOUND")}</h5>
+                    <p>{this.i18next.t("USE_FORCE_SYNC")}</p>
+                </div>
+            )}
             <FullCalendar
                 plugins={[dayGridPlugin, timeGridPlugin, bootstrap5Plugin, interactionPlugin, rrulePlugin, listPlugin]}
                 ref={this.calendarRef}

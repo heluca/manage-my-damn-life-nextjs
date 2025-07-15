@@ -1,0 +1,66 @@
+/* Gantt view styling */
+.gantt-container {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden; /* Prevent vertical scrollbar */
+  max-width: 100%; /* Ensure it doesn't exceed parent width */
+}
+
+/* Override gantt-task-react styles to make chart take full width */
+.gantt-container .gantt-container {
+  width: 100% !important;
+  overflow-x: auto;
+}
+
+.gantt-container .container {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+/* Make the chart area take full width */
+.gantt-container .gantt {
+  width: 100% !important;
+}
+
+/* Ensure the chart body takes full width */
+.gantt-container .gantt-chart {
+  width: 100% !important;
+}
+
+/* Ensure the task list is hidden properly */
+.gantt-container .gantt-task-list-wrapper {
+  display: none !important;
+}
+
+/* Ensure the chart area takes the full width */
+.gantt-container .gantt-chart-wrapper {
+  width: 100% !important;
+}
+
+/* Specific styles for different view modes */
+.gantt-container .gantt-chart-row-week,
+.gantt-container .gantt-chart-row-month {
+  min-width: 100% !important;
+  width: 100% !important;
+}
+
+/* Ensure calendar header takes full width */
+.gantt-container .calendar-header {
+  width: 100% !important;
+}
+
+/* Fix for Week and Month views */
+.gantt-container .gantt-horizontal-container {
+  width: 100% !important;
+  overflow-x: auto;
+}
+
+/* Ensure Week view columns are properly sized */
+.gantt-container .gantt-timeline-cell-week {
+  min-width: 150px !important;
+}
+
+/* Ensure Month view columns are properly sized */
+.gantt-container .gantt-timeline-cell-month {
+  min-width: 350px !important;
+}

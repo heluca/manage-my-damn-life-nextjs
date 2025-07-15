@@ -148,7 +148,13 @@ export const Datepicker = ({ title, value, onChangeHook, showDateOnly, isRequire
         <div >
            {/* {`value: ${value}`} */}
             <InputGroup className="mb-3">
-                <Form.Control isInvalid={isInvalid} value={manualDateInput} onChange={dateChanged} />
+                <Form.Control 
+                    id="datepickerInput"
+                    aria-label={title || "Date picker"}
+                    isInvalid={isInvalid} 
+                    value={manualDateInput} 
+                    onChange={dateChanged} 
+                />
                 <InputGroup.Text style={{ background: backGround }} onClick={() => setShowDatePicker(prev => !prev)} id="showCalendarButton"><FaCalendarAlt /></InputGroup.Text>
 
             </InputGroup>

@@ -327,6 +327,17 @@
     "WHEN":"When",
     "YES": "Yes",
     "YOUR_ACCOUNTS": "Your Accounts",
-    "YOUR_FILTERS": "Your Filters"
+    "YOUR_FILTERS": "Your Filters",
+    "CUSTOM_LOGO": "Custom Logo",
+    "ENTER_LOGO_URL": "Enter logo URL",
+    "LOGO_URL_HINT": "Enter a URL to your custom logo image. Leave empty to use the default logo.",
+    "SAVING": "Saving...",
+    "RESET": "Reset",
+    "NAVBAR_SETTINGS": "Navbar Settings",
+    "NAVBAR_CUSTOM_LINKS": "Custom Navigation Links",
+    "NAVBAR_CUSTOM_LINKS_DESC": "Add up to 5 custom links to the navigation bar. Links will open in a new tab.",
+    "LINK_NAME": "Link Name",
+    "LINK_URL": "URL",
+    "ENABLED": "Enabled"
   }
   

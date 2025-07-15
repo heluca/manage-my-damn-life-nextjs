@@ -1,0 +1,11 @@
+.taskViewDropdown :global(.dropdown-toggle) {
+  width: 100%;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.taskViewDropdown :global(.dropdown-menu) {
+  width: 100%;
+}

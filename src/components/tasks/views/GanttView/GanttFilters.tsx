@@ -23,48 +23,41 @@ export const GanttFilters = ({onViewChanged, onShowChildrenChanged, onShowTaskWi
     }
     return(
         <Row>
-            <Col>
-                <span style={{ justifyContent: 'center', display: 'flex', alignItems: "center", paddingBottom: 30, paddingTop: 30 }}>
-
-                    {t("VIEW")}&nbsp;&nbsp;
-                    <Form.Select value={view} onChange={viewChanged} style={{ width: 200 }} size="sm">
+            <Col md={4}>
+                <Form.Group className="mb-0">
+                    <Form.Label>{t("VIEW")}</Form.Label>
+                    <Form.Select 
+                        value={view} 
+                        onChange={viewChanged} 
+                        className="mb-0 form-select-primary"
+                        style={{ backgroundColor: 'var(--bs-primary)', color: 'var(--bs-primary-bg-subtle)' }}
+                    >
                         <option value={ViewMode.Day}>{t("DAY_VIEW")}</option>
                         <option value={ViewMode.Week}>{t("WEEK_VIEW")}</option>
                         <option value={ViewMode.Month}>{t("MONTH_VIEW")}</option>
                     </Form.Select>
-
-                </span>
-
+                    <small className="text-muted">Column width adjusts by view</small>
+                </Form.Group>
             </Col>
-            <Col>
-                <span style={{ justifyContent: 'center', display: 'flex', alignItems: "center", paddingBottom: 30, paddingTop: 30 }}>
-
-                    &nbsp;&nbsp;
-                    <Form.Check
-                        type="switch"
-                        key="switch_OK"
-                        id="children_visible_switch"
-                        checked={showChildren}
-                        onChange={childrenVisiblityChanged}
-                        label={t("SHOW_CHILDREN")}
-                    />
-                </span>
-
-
+            <Col md={4} className="d-flex align-items-end">
+                <Form.Check
+                    type="switch"
+                    key="switch_OK"
+                    id="children_visible_switch"
+                    checked={showChildren}
+                    onChange={childrenVisiblityChanged}
+                    label={t("SHOW_CHILDREN")}
+                    className="mb-0"
+                />
             </Col>
-            <Col>
-                <span style={{ justifyContent: 'center', display: 'flex', alignItems: "center", paddingBottom: 30, paddingTop: 30 }}>
-
-                    &nbsp;&nbsp;
-                    <Form.Check
-                        type="switch"
-                        checked={showWithoutDue}
-                        onChange={showTaskWithoutDueChanged}
-                        label={t("SHOW_TASKS_WITH_NO_DUE")}
-                    />
-                </span>
-
-
+            <Col md={4} className="d-flex align-items-end">
+                <Form.Check
+                    type="switch"
+                    checked={showWithoutDue}
+                    onChange={showTaskWithoutDueChanged}
+                    label={t("SHOW_TASKS_WITH_NO_DUE")}
+                    className="mb-0"
+                />
             </Col>
         </Row>
     )

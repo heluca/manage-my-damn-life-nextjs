@@ -3,7 +3,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import { Toastify } from '@/components/Generic';
 import 'react-toastify/dist/ReactToastify.css';
+import '../styles/theme-variables.css'
 import '../styles/global.css'
+import '../styles/gantt.css'
 import { SessionProvider } from "next-auth/react"
 import { useEffect, useState } from 'react';
 import { initAutoSync, shouldSync } from '@/helpers/frontend/sync';

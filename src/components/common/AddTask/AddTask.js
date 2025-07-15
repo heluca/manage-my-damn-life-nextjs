@@ -258,7 +258,7 @@ class AddTask extends Component{
     }
 
     render(){
-        var borderColor='2px solid '+SECONDARY_COLOUR
+        var borderColor='var(--mmdl-divider-width) solid var(--mmdl-divider-color)'
         return(
         <>
             <div style={{textAlign:"center", borderBottom:borderColor}}> 

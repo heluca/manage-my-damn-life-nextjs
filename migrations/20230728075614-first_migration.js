@@ -262,7 +262,7 @@ module.exports = {
         allowNull: true
       }
   
-    })
+    });
 
     await queryInterface.createTable('ssid_table', {
       ssid_table_id: {

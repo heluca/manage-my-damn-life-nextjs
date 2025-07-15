@@ -172,20 +172,29 @@ export const VAlarmForm = ({ input, onChange }: { input: vAlarm[], onChange: Fun
             {alarmList}
             <br />
             <p><small>{t("ADD_ALARM")}</small></p>
-            <Form.Text>
+            <Form.Text id="alarmActionLabel">
                 {t("ALARM_ACTION")}
             </Form.Text>
-            <Form.Select value={alarmAction} onChange={alarmActionSelected} style={{ width: "80%" }} aria-label="action-select">
+            <Form.Select 
+                id="alarmAction"
+                aria-labelledby="alarmActionLabel"
+                value={alarmAction} 
+                onChange={alarmActionSelected} 
+                style={{ width: "80%" }} 
+                aria-label="action-select"
+            >
                 <option value="AUDIO">{t("AUDIO")}</option>
                 <option value="DISPLAY">{t("DISPLAY")}</option>
                 <option value="EMAIL">{t("EMAIL")}</option>
             </Form.Select>
-            <Form.Text>
+            <Form.Text id="whenLabel">
                 {t("WHEN")}
             </Form.Text>
             <Row>
                 <Col md={4}>
                     <Form.Control
+                        id="triggerValue"
+                        aria-labelledby="whenLabel"
                         type="number"
                         value={triggerValue}
                         onChange={e => setTriggerValue(parseInt(e.target.value))}
@@ -193,41 +202,70 @@ export const VAlarmForm = ({ input, onChange }: { input: vAlarm[], onChange: Fun
                 </Col>
 
                 <Col md={8}>
-                    <Form.Select value={triggerDirection} onChange={(e) => setTriggerDirection(e.target.value)} style={{ width: "80%" }}  >
+                    <Form.Select 
+                        id="triggerDirection"
+                        aria-labelledby="whenLabel"
+                        value={triggerDirection} 
+                        onChange={(e) => setTriggerDirection(e.target.value)} 
+                        style={{ width: "80%" }}  
+                    >
                         <option value="BEFORE">{`${t("MINUTES").toLowerCase()} ${t("BEFORE").toLowerCase()}`}</option>
                         <option value="AFTER">{`${t("MINUTES").toLowerCase()} ${t("AFTER").toLowerCase()}`}</option>
                     </Form.Select>
 
                 </Col>
             </Row>
-            <Form.Select value={triggerRelatedto} onChange={(e) => setTriggerRelatedto(e.target.value)} style={{ width: "80%", marginTop: 10 }}  >
+            <Form.Select 
+                id="triggerRelatedto"
+                aria-labelledby="whenLabel"
+                value={triggerRelatedto} 
+                onChange={(e) => setTriggerRelatedto(e.target.value)} 
+                style={{ width: "80%", marginTop: 10 }}  
+            >
                 <option value="END">{t("DUE_DATE")}</option>
                 <option value="START">{t("START")}</option>
             </Form.Select>
 
-            <Form.Text>
+            <Form.Text id="descriptionLabel">
                 {t("DESCRIPTION")}
             </Form.Text>
 
-            <Form.Control as="textarea" onChange={(e) => setDescription(e.target.value)} value={description} />
+            <Form.Control 
+                id="description"
+                aria-labelledby="descriptionLabel"
+                as="textarea" 
+                onChange={(e) => setDescription(e.target.value)} 
+                value={description} 
+            />
             {
                 (alarmAction === "EMAIL") &&
                 <>
-                    <Form.Text>
+                    <Form.Text id="summaryLabel">
                         {t("SUMMARY")}
                     </Form.Text>
-                    <Form.Control onChange={(e) => setSummary(e.target.value)} value={summary} />
+                    <Form.Control 
+                        id="summary"
+                        aria-labelledby="summaryLabel"
+                        onChange={(e) => setSummary(e.target.value)} 
+                        value={summary} 
+                    />
 
                 </>
             }
             {
                 (alarmAction === "EMAIL") &&
                 <>
-                    <Form.Text>
+                    <Form.Text id="attendeesLabel">
                         {t("ATTENDEES")}
                     </Form.Text>
                     <p><small>{t("ATTENDEES_DESC")}</small></p>
-                    <Form.Control as="textarea" onChange={(e) => setAttendeeLists(e.target.value)} value={attendeeList} />
+                    <Form.Control 
+                        id="attendees"
+                        aria-labelledby="attendeesLabel"
+                        as="textarea" 
+                        onChange={(e) => setAttendeeLists(e.target.value)} 
+                        value={attendeeList} 
+                    />
 
                 </>
 

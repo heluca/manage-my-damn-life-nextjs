@@ -1,0 +1,46 @@
+/* Bootstrap theme variables override */
+:root {
+  /* Use these CSS variables to ensure consistent colors throughout the app */
+  --mmdl-primary: var(--bs-primary);
+  --mmdl-primary-hover: var(--bs-primary-bg-subtle);
+  --mmdl-primary-text: var(--bs-primary-text-emphasis);
+  --mmdl-secondary: var(--bs-secondary);
+  --mmdl-secondary-hover: var(--bs-secondary-bg-subtle);
+  --mmdl-secondary-text: var(--bs-secondary-text-emphasis);
+  --mmdl-success: var(--bs-success);
+  --mmdl-danger: var(--bs-danger);
+  --mmdl-warning: var(--bs-warning);
+  --mmdl-info: var(--bs-info);
+  --mmdl-light: var(--bs-light);
+  --mmdl-dark: var(--bs-dark);
+  
+  /* Font sizes using rem for better accessibility */
+  --mmdl-font-size-base: 1rem;
+  --mmdl-font-size-sm: 0.875rem;
+  --mmdl-font-size-lg: 1.25rem;
+  --mmdl-font-size-xl: 1.5rem;
+  --mmdl-font-size-xxl: 1.75rem;
+  
+  /* Spacing */
+  --mmdl-spacing-1: 0.25rem;
+  --mmdl-spacing-2: 0.5rem;
+  --mmdl-spacing-3: 1rem;
+  --mmdl-spacing-4: 1.5rem;
+  --mmdl-spacing-5: 3rem;
+  
+  /* Divider colors */
+  --mmdl-divider-color: var(--bs-secondary);
+  --mmdl-divider-width: 3px;
+}
+
+/* Dark mode specific overrides */
+[data-bs-theme="dark"] {
+  --mmdl-border-color: rgba(255, 255, 255, 0.1);
+  --mmdl-bg-subtle: rgba(255, 255, 255, 0.05);
+}
+
+/* Light mode specific overrides */
+[data-bs-theme="light"] {
+  --mmdl-border-color: rgba(0, 0, 0, 0.1);
+  --mmdl-bg-subtle: rgba(0, 0, 0, 0.05);
+}

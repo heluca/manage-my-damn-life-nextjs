@@ -59,13 +59,11 @@ export const CombinedViewFunctional = (props) => {
   <>
     <AddTaskFunctional />
     <HomeTasksDDL />
-    <br />
-    <h2>{currentPageTitle}</h2>              
     <TaskListFrameWork />
   </>
   )
   const taskOutput = showListColumn ? (<></>) : <GetAccordionTaskList t={t} body={allTaskLists} />
-  const borderLeft = !showListColumn ? "" : `3px solid ${SECONDARY_COLOUR}`
+  const borderLeft = !showListColumn ? "" : 'var(--mmdl-divider-width) solid var(--mmdl-divider-color)'
   return (
     <>
       {taskOutput}

@@ -149,34 +149,38 @@ const AddCaldavAccount = ({ onAddAccountDismissed, onAccountAddSuccess }) => {
       </Row>
       <br />
       <Form.Group className="mb-3">
-        <Form.Label>{t("ACCOUNT_NAME")}</Form.Label>
+        <Form.Label htmlFor="accountName">{t("ACCOUNT_NAME")}</Form.Label>
         <Form.Control
+          id="accountName"
           disabled={requestPending}
           onChange={accountNameValueChanged}
           placeholder={t("ENTER_ACCOUNT_NAME")}
         />
-        <Form.Label style={{ marginTop: 30 }}>
+        <Form.Label htmlFor="serverURL" style={{ marginTop: 30 }}>
           {t("SERVER_URL")}
         </Form.Label>
         <Form.Control
+          id="serverURL"
           disabled={requestPending}
           onChange={serverURLValueChanged}
           type="URL"
           placeholder={t("ENTER_A_SERVER_NAME")}
         />
-        <Form.Label style={{ marginTop: 30 }}>
+        <Form.Label htmlFor="caldavUsername" style={{ marginTop: 30 }}>
           {t("CALDAV_USERNAME")}
         </Form.Label>
         <Form.Control
+          id="caldavUsername"
           disabled={requestPending}
           onChange={serverUsernameValueChanged}
           type="URL"
           placeholder={t("CALDAV_USERNAME_PLACEHOLDER")}
         />
-        <Form.Label style={{ marginTop: 30 }}>
+        <Form.Label htmlFor="caldavPassword" style={{ marginTop: 30 }}>
           {t("CALDAV_PASSWORD")}
         </Form.Label>
         <Form.Control
+          id="caldavPassword"
           disabled={requestPending}
           onChange={serverPasswordValueChanged}
           type="password"

@@ -5,7 +5,7 @@ import { getErrorResponse } from "@/helpers/errors";
 import { getMessageFromAPIResponse } from "../response";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
-import { SETTING_NAME_CALENDAR_START_DAY, SETTING_NAME_DATE_FORMAT, SETTING_NAME_DEFAULT_CALENDAR, SETTING_NAME_DEFAULT_VIEW_CALENDAR, SETTING_NAME_NUKE_DEXIE_ON_LOGOUT, SETTING_NAME_TIME_FORMAT, USER_SETTING_SYNCTIMEOUT } from "../settings";
+import { SETTING_NAME_CALENDAR_START_DAY, SETTING_NAME_CUSTOM_LOGO, SETTING_NAME_DATE_FORMAT, SETTING_NAME_DEFAULT_CALENDAR, SETTING_NAME_DEFAULT_VIEW_CALENDAR, SETTING_NAME_NAVBAR_LINKS, SETTING_NAME_NUKE_DEXIE_ON_LOGOUT, SETTING_NAME_TIME_FORMAT, USER_SETTING_SYNCTIMEOUT } from "../settings";
 
 // const i18next= getI18nObject()
 
@@ -36,16 +36,38 @@ export default class SettingsHelper
         if(output && output["user"] && Array.isArray(output["user"])){
             for(const i in output["user"]){
                 if(output["user"][i]["name"] && output["user"][i]["value"]){
-                    
-                    // console.log(output["user"][i]["name"], output["user"][i]["value"])
-
+                    // Store all user settings in localStorage
                     localStorage.setItem(output["user"][i]["name"], output["user"][i]["value"])
+                    
+                    // Special handling for custom logo to ensure it's immediately available
+                    if(output["user"][i]["name"] === SETTING_NAME_CUSTOM_LOGO) {
+                        // If we're in a browser environment, trigger a logo update
+                        if (typeof window !== 'undefined') {
+                            const logoUpdateEvent = new CustomEvent('logoUpdated', { 
+                                detail: { logoUrl: output["user"][i]["value"] } 
+                            });
+                            window.dispatchEvent(logoUpdateEvent);
+                        }
+                    }
+                    
+                    // Special handling for navbar links to ensure they're immediately available
+                    if(output["user"][i]["name"] === SETTING_NAME_NAVBAR_LINKS) {
+                        // If we're in a browser environment, trigger a navbar links update
+                        if (typeof window !== 'undefined') {
+                            try {
+                                const links = JSON.parse(output["user"][i]["value"]);
+                                const navbarLinksUpdateEvent = new CustomEvent('navbarLinksUpdated', { 
+                                    detail: { links } 
+                                });
+                                window.dispatchEvent(navbarLinksUpdateEvent);
+                            } catch (error) {
+                                console.error('Error parsing navbar links:', error);
+                            }
+                        }
+                    }
                 }
             }
-
         }
-        // console.log("output", output)
-
     }
 
     static async getAllFromServer(){

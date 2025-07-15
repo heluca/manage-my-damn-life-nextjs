@@ -173,7 +173,7 @@ export class TaskWithFilters extends Component{
       return found
     }
     render(){
-      var borderBottom = "3px solid "+SECONDARY_COLOUR
+      var borderBottom = 'var(--mmdl-divider-width) solid var(--mmdl-divider-color)'
       return(
       <>
     

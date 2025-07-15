@@ -470,7 +470,7 @@ class AddFilters extends Component {
 
     }
     render() {
-        var borderColor = "1px solid " + SECONDARY_COLOUR
+        var borderColor = 'var(--mmdl-divider-width) solid var(--mmdl-divider-color)'
         var filterbyDueForm = null
         // let dueFrom = isDateValid(this.state.dueDateFrom) ? this.state.dueDateFrom : new Date()
         // let dueBefore = isDateValid(this.state.dueDateBefore) ? this.state.dueDateBefore : new Date()

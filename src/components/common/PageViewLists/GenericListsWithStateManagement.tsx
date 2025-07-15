@@ -3,15 +3,14 @@ import { SYSTEM_DEFAULT_LABEL_PREFIX } from "@/config/constants"
 import { PRIMARY_COLOUR } from "@/config/style"
 import { getAllLabelsFromDexie, updateLabelCacheInDexie } from "@/helpers/frontend/dexie/dexie_labels"
 import { isDarkModeEnabled } from "@/helpers/frontend/theme"
-import { PAGE_VIEW_JSON, PAGE_VIEW_NAME_ALL_TASKS, PAGE_VIEW_NAME_DUE_NEXT_SEVEN, PAGE_VIEW_NAME_DUE_TODAY, PAGE_VIEW_NAME_HAVE_STARTED, PAGE_VIEW_NAME_HIGH_PRIORITY, PAGE_VIEW_NAME_MY_DAY } from "@/helpers/viewHelpers/pages"
+import { PAGE_VIEW_JSON } from "@/helpers/viewHelpers/pages"
 import Link from "next/link"
 import { useCallback, useEffect, useState } from "react"
-import { Badge, Col, Row } from "react-bootstrap"
-import { AiFillStar, AiOutlineFilter, AiOutlineSetting } from "react-icons/ai"
-import { FiSunrise } from "react-icons/fi"
+import { Badge, Col, Form, Row } from "react-bootstrap"
+import { AiOutlineFilter, AiOutlineSetting } from "react-icons/ai"
 import { IoRefreshCircleOutline } from "react-icons/io5"
 import { FaExternalLinkAlt } from "react-icons/fa";
-import { MdToday } from "react-icons/md"
+import { FilterSelector } from "./FilterSelector"
 import { toast } from "react-toastify"
 import { useAtomValue, useSetAtom } from 'jotai'
 import { calDavObjectAtom, currentPageAtom, currentPageTitleAtom, filterAtom } from "stateStore/ViewStore"
@@ -31,17 +30,12 @@ export const GenericListsWithStateManagement = ({postClick}: {postClick: Functio
      */
     const [totalHeight, setTotalHeight] = useState(0)
     const [allFilters, setAllFilters] = useState<JSX.Element[]>([])
+    const [filterViewType, setFilterViewType] = useState<'dropdown' | 'radio'>('dropdown')
 
     const{t} = useTranslation()
     const updateDimensions = () => {
         setTotalHeight(window.innerHeight-100);
     };
-    const pageViewClicked = (pageName) =>{
-        setCurrentPageTitle(t(pageName).toString())
-        setFilterAtom(PAGE_VIEW_JSON[pageName])
-        setCalDavAtom({caldav_accounts_id: null, calendars_id: null})
-        postClick()
-    }
 
     const labelClicked = useCallback((e) =>{
         const labelName = e.target.textContent
@@ -112,60 +106,17 @@ export const GenericListsWithStateManagement = ({postClick}: {postClick: Functio
     return(
         <>
             <div style={{overflowY: 'scroll',  height: totalHeight}}>
-                <div   style={{ margin: 20, padding: 5, justifyContent: 'center', alignItems:'center', borderBottom: `1px solid ${borderBottomColor}`}} className="row">
-                    <Col onClick={() =>pageViewClicked(PAGE_VIEW_NAME_MY_DAY)}  xs={10}>
-                        <FiSunrise className="textDefault"  />                         
-                        <span className="textDefault">&nbsp;{t("MY_DAY")}</span>
-                    </Col>
-                    <Col xs={2}>
-                    <Link target="_blank" href={`?name=${PAGE_VIEW_NAME_MY_DAY}`}><FaExternalLinkAlt className="textDefault" /> </Link>
-                    </Col>
-                </div>
-                <div   style={{margin: 20, padding: 5, justifyContent: 'center', alignItems:'center', borderBottom: `1px solid ${borderBottomColor}`}}  className="row">
-                    <Col onClick={() =>pageViewClicked(PAGE_VIEW_NAME_DUE_TODAY)}  xs={10}>
-                        <MdToday className="textDefault" /> <span className="textDefault" >{t("DUE_TODAY")}</span>
-                    </Col>
-                    <Col xs={2}>
-                    <Link target="_blank" href={`?name=${PAGE_VIEW_NAME_DUE_TODAY}`}><FaExternalLinkAlt className="textDefault" /> </Link>
-                    </Col>
-
-                </div>
-                <div  style={{margin: 20, padding: 5, justifyContent: 'center', alignItems:'center', borderBottom: `1px solid ${borderBottomColor}`}}  className="row">
-                <Col onClick={() =>pageViewClicked(PAGE_VIEW_NAME_DUE_NEXT_SEVEN)} xs={10}>
-                    <MdToday className="textDefault"/> <span className="textDefault">{t("DUE_NEXT_SEVEN_DAYS")}</span>
-                </Col>
-                <Col xs={2}>
-                    <Link target="_blank" href={`?name=${PAGE_VIEW_NAME_DUE_NEXT_SEVEN}`}><FaExternalLinkAlt className="textDefault" /> </Link>
-                </Col>
-
-                </div>
-                <div  style={{margin: 20, padding: 5, justifyContent: 'center', alignItems:'center', borderBottom: `1px solid ${borderBottomColor}`}}  className="row">
-                    <Col xs={10} onClick={() =>pageViewClicked(PAGE_VIEW_NAME_HIGH_PRIORITY)}>
-                        <AiFillStar className="textDefault"/> <span className="textDefault"> {t("HIGH_PRIORITY")}
-</span>
-                    </Col>
-                    <Col xs={2}>
-                        <Link target="_blank" href={`?name=${PAGE_VIEW_NAME_HIGH_PRIORITY}`}><FaExternalLinkAlt className="textDefault" /> </Link>
-                    </Col>
-                </div>
-                <div  style={{margin: 20, padding: 5, justifyContent: 'center', alignItems:'center', borderBottom: `1px solid ${borderBottomColor}`}}  className="row">
-                        <Col onClick={() =>pageViewClicked(PAGE_VIEW_NAME_HAVE_STARTED)}  xs={10} >
-                            <MdToday className="textDefault"/> <span className="textDefault">  { t("HAVE_STARTED")}
-</span>
-                        </Col>
-                        <Col xs={2}>
-                            <Link target="_blank" href={`?name=${PAGE_VIEW_NAME_HAVE_STARTED}`}><FaExternalLinkAlt className="textDefault" /> </Link>
-                         </Col>
-                </div>
-
-                <div  style={{margin: 20, padding: 5, justifyContent: 'center', alignItems:'center', borderBottom: `1px solid ${borderBottomColor}`}}  className="row">
-                        <Col onClick={() =>pageViewClicked(PAGE_VIEW_NAME_ALL_TASKS)}  xs={10} >
-                            <MdToday className="textDefault"/> <span className="textDefault">  { t("ALL_TASKS")}
-</span>
-                        </Col>
-                        <Col xs={2}>
-                            <Link target="_blank" href={`?name=${PAGE_VIEW_NAME_ALL_TASKS}`}><FaExternalLinkAlt className="textDefault" /> </Link>
-                         </Col>
+                <div style={{margin: 20, padding: 5}}>
+                    <div className="d-flex justify-content-between align-items-center mb-2">
+                        <h3>{t("QUICK_FILTERS")}</h3>
+                        <Form.Check 
+                            type="switch"
+                            id="filter-view-switch"
+                            label={t("SHOW_AS_LIST")}
+                            onChange={(e) => setFilterViewType(e.target.checked ? 'radio' : 'dropdown')}
+                        />
+                    </div>
+                    <FilterSelector postClick={postClick} variant={filterViewType} />
                 </div>
                 <br />
 

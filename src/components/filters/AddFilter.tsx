@@ -273,7 +273,7 @@ export const AddFilter = ({onClose, onAdd, filterNameInput,filterInput, filterid
   },[filterNameInput,filterInput, filterid, mode])
   const filterResultinWords = getFilterOutput()
   return (
-    <div style={{ border: `1px solid ${SECONDARY_COLOUR}`, padding: 20 }}>
+    <div style={{ border: 'var(--mmdl-divider-width) solid var(--mmdl-divider-color)', padding: 20 }}>
       <Form>
         <Form.Label>
           {t("FILTER_NAME")}

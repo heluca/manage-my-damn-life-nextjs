@@ -131,20 +131,20 @@ export const SingleTask = ({ parsedTask, level, id }: { parsedTask: ParsedTask, 
     }
     let priorityColor = ""
 
-    let priorityStar = (<AiOutlineStar color={priorityColor} size={12} />)
+    let priorityStar = (<AiOutlineStar color={priorityColor} size={22} />)
     if (parsedTask.priority != null) {
         if (parseInt(parsedTask.priority.toString()) < 3 && parseInt(parsedTask.priority.toString()) > 0) {
             priorityColor = "red"
-            priorityStar = (<AiFillStar color={priorityColor} size={12} />)
+            priorityStar = (<AiFillStar color={priorityColor} size={22} />)
         }
         else if (parseInt(parsedTask.priority.toString()) < 7 && parseInt(parsedTask.priority.toString()) > 0) {
             priorityColor = "gold"
             priorityStar = (
-                <AiFillStar color={priorityColor} size={12} />)
+                <AiFillStar color={priorityColor} size={22} />)
         }
         else {
             priorityStar = (
-                <AiOutlineStar color={priorityColor} size={12} />
+                <AiOutlineStar color={priorityColor} size={22} />
             )
         }
     }
@@ -160,7 +160,7 @@ export const SingleTask = ({ parsedTask, level, id }: { parsedTask: ParsedTask, 
     }
 
 
-    priorityStar = (<div onClick={priorityStarClicked} style={{ padding: 0, verticalAlign: 'middle', textAlign: 'center' }} className="col-1">{priorityStar}</div>)
+    priorityStar = (<div onClick={priorityStarClicked} style={{ padding: 0, verticalAlign: 'middle', textAlign: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center' }} className="col-1">{priorityStar}</div>)
     const isDone = !TaskPending(parsedTask) 
 
     

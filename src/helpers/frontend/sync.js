@@ -109,13 +109,17 @@ export async function fetchLatestEvents(refreshCalList)
 
 export async function fetchLatestEventsV2(forceSync)
 {
-    if(isSyncing()){
+    if(isSyncing() && !forceSync){
         // toast.warn(i18next.t("ALREADY_SYNCING"))
         console.warn("Sync already in progress.")
+        return;
     }
     localStorage.setItem(IS_SYNCING, true)
     let arrayFromDexie = await refreshCalendarListV2()
-    if(forceSync) arrayFromDexie = await getCalDAVSummaryFromDexie()
+    if(forceSync) {
+        console.log("Force sync requested, fetching all calendars")
+        arrayFromDexie = await getCalDAVSummaryFromDexie()
+    }
     // console.log("arrayFromDexie_caldavAccounts", arrayFromDexie)
     let counter=0
     if(isValidResultArray(arrayFromDexie)){
@@ -126,10 +130,11 @@ export async function fetchLatestEventsV2(forceSync)
 
                     console.log("Syncing Calendar: "+cal["displayName"], cal["calendars_id"])
                     counter++
-                    const events= await fetchFreshEventsFromCalDAV_ForDexie(arrayFromDexie[i]["caldav_accounts_id"], cal["url"], cal["ctag"], cal["syncToken"])
-                    // console.log("events", events)
+                    console.log(`Fetching events for calendar: ${cal["displayName"]} (ID: ${cal["calendars_id"]})`)
+                    const events = await fetchFreshEventsFromCalDAV_ForDexie(arrayFromDexie[i]["caldav_accounts_id"], cal["url"], cal["ctag"], cal["syncToken"])
+                    console.log(`Received ${events ? events.length : 0} events from server for calendar: ${cal["displayName"]}`)
                     //Now we save these events in dexie.
-                    await saveAPIEventReponseToDexie(cal["calendars_id"],events)
+                    await saveAPIEventReponseToDexie(cal["calendars_id"], events)
 
                 }
             }

@@ -1,67 +1,105 @@
-
+/* Base styling */
 .extra-padding {
-    padding: 50 !important
+    padding: 3rem !important;
 }
 
-h1{
-    font-size: 18px;
-}
-h2{
-    font-size: 16px;
+/* Typography - Using Bootstrap's responsive font sizing */
+h1 {
+    font-size: 1.75rem;
 }
 
-h3{
-    font-size: 14px;
-}
-h4{
-    font-size: 12px;
+h2 {
+    font-size: 1.5rem;
 }
 
-p{
-    font-size: 12px;
-
+h3 {
+    font-size: 1.25rem;
 }
 
-.textDefault{
-    font-size: 12px;
-
+h4 {
+    font-size: 1rem;
 }
 
-.smallText{
-    font-size: 10px;
-
+p {
+    font-size: 1rem;
 }
 
-.badge{
-    background-color: green;
+.textDefault {
+    font-size: 1rem;
 }
 
-.taskDoneCheckbox{
-    height: 40px;
+.smallText {
+    font-size: 0.875rem;
 }
 
-.btn-primary{
-    background-color: #881be4;
-    border-color: #881be4;
-}
-.btn-primary:hover{
-    background-color: #cfa3f4;
-    border-color: #cfa3f4;
-    color: black;
-}
-.btn-primary::active{
-    background-color: #881be4;
-
+/* Using Bootstrap theme colors */
+.badge {
+    background-color: var(--bs-secondary);
 }
 
-a{
-    color:  #881be4;
-}
-a:hover{
-    color: #cfa3f4;
+.taskDoneCheckbox {
+    height: 1.5rem;
+    width: 1.5rem;
 }
 
-.my-context-menu-dark{
-    background-color: "black" !important;
-    color: "red" !important
-};
+/* Using Bootstrap theme colors for buttons and links */
+.btn-primary {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+
+.btn-primary:hover {
+    background-color: var(--bs-primary-bg-subtle);
+    border-color: var(--bs-primary-border-subtle);
+    color: var(--bs-primary-text-emphasis);
+}
+
+.btn-primary:active {
+    background-color: var(--bs-primary-bg-subtle);
+    border-color: var(--bs-primary);
+}
+
+a {
+    color: var(--bs-primary);
+}
+
+a:hover {
+    color: var(--bs-primary-text-emphasis);
+}
+
+/* Context menu styling */
+.my-context-menu-dark {
+    background-color: var(--bs-dark) !important;
+    color: var(--bs-light) !important;
+}
+
+/* Radio button group styling */
+.view-radio-group {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.view-radio-group .form-check {
+    margin-right: 1rem;
+}
+
+/* Consistent form control sizing */
+.form-select, .form-control {
+    font-size: 1rem;
+}
+
+/* Filter selector styling */
+.filter-selector-dropdown {
+    border-color: var(--bs-secondary);
+    border-radius: 0.375rem;
+}
+
+.filter-selector-radio .form-check {
+    margin-bottom: 0.5rem;
+    padding-left: 1.75rem;
+}
+
+.filter-selector-radio .form-check-input:checked {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}

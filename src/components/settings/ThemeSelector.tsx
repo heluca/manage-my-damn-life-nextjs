@@ -3,12 +3,21 @@ import { Form } from 'react-bootstrap';
 import { BOOTSWATCH_THEMES } from '../ThemeProvider';
 import { getAuthenticationHeadersforUser } from '@/helpers/frontend/user';
 
+// Use the same storage key as in ThemeProvider
+const THEME_STORAGE_KEY = 'mmdl-theme';
+
 export default function ThemeSelector() {
   const [selectedTheme, setSelectedTheme] = useState('default');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetchCurrentTheme();
+    // First check localStorage for theme
+    const storedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+    if (storedTheme) {
+      setSelectedTheme(storedTheme);
+    } else {
+      fetchCurrentTheme();
+    }
   }, []);
 
   const fetchCurrentTheme = async () => {
@@ -21,6 +30,8 @@ export default function ThemeSelector() {
         const data = await response.json();
         if (data.success && data.data?.value) {
           setSelectedTheme(data.data.value);
+          // Update localStorage
+          localStorage.setItem(THEME_STORAGE_KEY, data.data.value);
         }
       }
     } catch (error) {
@@ -43,6 +54,8 @@ export default function ThemeSelector() {
 
       if (response.ok) {
         setSelectedTheme(theme);
+        // Update localStorage immediately
+        localStorage.setItem(THEME_STORAGE_KEY, theme);
         applyTheme(theme);
       }
     } catch (error) {

@@ -112,13 +112,21 @@ export function AddTaskFunctional(props) {
         setQuickAddResults([<div key="quick_add" style={{ margin: 5 }}>{output}</div>]);
     };
 
-    const borderColor = '2px solid ' + SECONDARY_COLOUR;
+    const borderColor = 'var(--mmdl-divider-width) solid var(--mmdl-divider-color)';
     return (
         <>
             <div style={{ textAlign: "center", borderBottom: borderColor }}>
                 <Stack gap={1} direction="horizontal" style={{ width: "100%", marginTop: 10, marginBottom: 10 }}>
                     <div style={{ width: "100%" }} >
-                        <Form.Control value={newTaskSummary} onChange={taskSummaryChanged} onKeyDown={onKeyDown} type="text" placeholder={t("ADD_A_TASK") ?? ""} />
+                        <Form.Control 
+                            id="addTaskInput"
+                            aria-label={t("ADD_A_TASK") ?? "Add a task"}
+                            value={newTaskSummary} 
+                            onChange={taskSummaryChanged} 
+                            onKeyDown={onKeyDown} 
+                            type="text" 
+                            placeholder={t("ADD_A_TASK") ?? ""} 
+                        />
                     </div>
                     <div className="ms-auto" ><AddInfo /></div>
                     <div ><Button size="sm" onClick={addTask}>{t("ADD")}</Button></div>

@@ -215,30 +215,68 @@ export const GanttViewWithState = ({taskListSections}:{taskListSections: TaskSec
     const jumpToToday = () =>{
         setViewDate(new Date(Date.now()-(86400*1000*3)))
     }
+    // Calculate appropriate column width based on view mode
+    const getColumnWidth = () => {
+        switch(view) {
+            case ViewMode.Day:
+                return 60;
+            case ViewMode.Week:
+                return 150;
+            case ViewMode.Month:
+                return 350;
+            default:
+                return 60;
+        }
+    };
+
     const getGanttView = ()  =>{
         if(isLoading){
             return <Loading centered={true} />
         }
         if(ganttTasks.length>0){
-
-            return <Gantt viewMode={view}  TaskListTable={DummyTaskListComponent} onDoubleClick={taskClicked}  viewDate={viewDate}  todayColor="#FFF8DC" onDateChange={onDateChange} TaskListHeader={DummyTaskHeaderComponent} tasks={ganttTasks} />
+            return (
+                <div style={{ width: '100%', overflowX: 'auto' }}>
+                    <Gantt 
+                        viewMode={view} 
+                        TaskListTable={DummyTaskListComponent} 
+                        onDoubleClick={taskClicked} 
+                        viewDate={viewDate} 
+                        todayColor="#FFF8DC" 
+                        onDateChange={onDateChange} 
+                        TaskListHeader={DummyTaskHeaderComponent} 
+                        tasks={ganttTasks} 
+                        columnWidth={getColumnWidth()}
+                        listCellWidth=""
+                        barFill={75}
+                    />
+                </div>
+            );
         }
 
         return t("NOTHING_TO_SHOW")
     }
     return(
-        <>
-        <Row style={{flex:1, alignContent:"space-between"}}>
-            <Col style={{textAlign: "center"}}>
-                <Button variant="outline-info" onClick={jumpToToday} size="sm">{t("TODAY")}</Button>
-            </Col>
-            <Col>
-                <HelpGanttView />
-            </Col>
-        </Row>
-
-        <GanttFilters onViewChanged={onViewChanged} onShowChildrenChanged={onShowChildrenChanged} onShowTaskWithoutDueChanged={onShowTaskWithoutDueChanged} />
-        {getGanttView()}
-        </>
+        <div style={{ width: '100%' }}>
+            <div className="card mb-4">
+                <div className="card-body">
+                    <Row className="mb-3">
+                        <Col md={6} className="d-flex align-items-center">
+                            <Button variant="primary" onClick={jumpToToday} size="sm" className="me-2">{t("TODAY")}</Button>
+                            <HelpGanttView />
+                        </Col>
+                        <Col md={6} className="d-flex justify-content-end">
+                            {/* Additional controls could go here */}
+                        </Col>
+                    </Row>
+                    
+                    <GanttFilters 
+                        onViewChanged={onViewChanged} 
+                        onShowChildrenChanged={onShowChildrenChanged} 
+                        onShowTaskWithoutDueChanged={onShowTaskWithoutDueChanged} 
+                    />
+                </div>
+            </div>
+            {getGanttView()}
+        </div>
     )
 }

@@ -1,8 +1,12 @@
 const dotenv = require('dotenv')
-dotenv.config({ path: '.env.local', override: true });
+const path = require('path')
+dotenv.config({ path: path.resolve(process.cwd(), '.env.local'), override: true });
 const dialect = process.env.DB_DIALECT ?? "mysql"
 module.exports = {
-  local: {
+  local: dialect === 'sqlite' ? {
+    dialect: 'sqlite',
+    storage: process.env.DB_NAME
+  } : {
     username: process.env.DB_USER,
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,

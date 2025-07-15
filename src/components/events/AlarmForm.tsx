@@ -100,6 +100,8 @@ export const AlarmForm = ({alarmsArray, onChange}: {alarmsArray:AlarmType[], onC
         <Row style={{justifyContent: 'center', display: 'flex', alignItems: "center", }}>
             <Col className="col-4">
             <Form.Control
+                id="alarmValueInput"
+                aria-label={t("ALARM_VALUE") || "Alarm value in minutes"}
                 type="number"
                 min={0}
                 value={alarmValue}

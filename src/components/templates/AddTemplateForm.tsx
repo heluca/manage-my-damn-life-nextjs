@@ -159,16 +159,16 @@ return(
     <div style={{padding:40}} className='container-fluid'>
     <h2>{i18next.t("ADD")}</h2>
     <br />
-    <Form.Label>{`${i18next.t("TEMPLATE")} ${i18next.t("NAME")}`}</Form.Label>
-    <Form.Control maxLength={50} onChange={nameChanged} value={name}  />
+    <Form.Label htmlFor="templateName">{`${i18next.t("TEMPLATE")} ${i18next.t("NAME")}`}</Form.Label>
+    <Form.Control id="templateName" maxLength={50} onChange={nameChanged} value={name}  />
     <br />
-    <Form.Label>{`${i18next.t("TYPE")}`}</Form.Label>
-    <Form.Select value={type} onChange={typeChanged} aria-label="Type Select">
+    <Form.Label htmlFor="templateType">{`${i18next.t("TYPE")}`}</Form.Label>
+    <Form.Select id="templateType" value={type} onChange={typeChanged} aria-label="Type Select">
       <option value="TASK">{i18next.t("TASK")}</option>
       <option value="EVENT">{i18next.t("EVENT")}</option>
     </Form.Select>
     <br/>
-    <Form.Label>{`${i18next.t("TEMPLATE")} ${i18next.t("DATA")}`}</Form.Label>
+    <Form.Label htmlFor="templateData">{`${i18next.t("TEMPLATE")} ${i18next.t("DATA")}`}</Form.Label>
     <br />
     {dataToShow}
     <br />

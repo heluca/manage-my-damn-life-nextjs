@@ -5,8 +5,10 @@ import GenericLists from "@/components/common/GenericLists"
 import { GenericListsWithStateManagement } from "@/components/common/PageViewLists/GenericListsWithStateManagement"
 import { ViewSelector } from "@/components/common/PageViewLists/ViewSelector"
 import TaskViewOptions from "@/components/common/TaskViewOptions"
+import { HomeTasksDDL } from "@/components/Home/HomeTasks/HomeTasksDDL"
 import { GanttViewWithState } from "@/components/tasks/views/GanttView/GanttViewWithState"
 import { TaskListFrameWork } from "@/components/tasks/views/TaskListFrameWork"
+import { TaskListOnly } from "@/components/tasks/views/TaskListOnly"
 import { PRIMARY_COLOUR, SECONDARY_COLOUR } from "@/config/style"
 import { PAGE_VIEW_JSON } from "@/helpers/viewHelpers/pages"
 import { useAtomValue, useSetAtom } from "jotai"
@@ -103,45 +105,51 @@ export const TaskViewListWithStateManagement =  () =>{
 
   const expandColButton = <div> <AiOutlineMenuUnfold color={PRIMARY_COLOUR} onClick={()=>setShowLeftColumnOffcanvas(true)} size={16} /></div>
 
-  const borderRight = '3px solid' + SECONDARY_COLOUR
+  const borderRight = 'var(--mmdl-divider-width) solid var(--mmdl-divider-color)'
 
-  const leftColumnMatter = showListColumn || showLeftColumnOffcanvas? (<GenericListsWithStateManagement postClick={postClick}  />
+  const allTaskLists = (
+    <>
+      <AddTaskFunctional />
+      <HomeTasksDDL />
+      <TaskListOnly />
+    </>
+  )
+
+  const leftColumnMatter = showListColumn || showLeftColumnOffcanvas ? (
+    <GenericListsWithStateManagement postClick={postClick} />
   ) : expandColButton
 
-    return(
-        <>
-        <Head>
-          <title>{t("APP_NAME_TITLE")+" - "+t("TASK_VIEW")}</title>
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-        <AppBarGeneric />
-        <div className='container-fluid'>
+  return(
+    <>
+      <Head>
+        <title>{t("APP_NAME_TITLE")+" - "+t("TASK_VIEW")}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <AppBarGeneric />
+      <div className='container-fluid'>
         <Row>
           <Col>
-            <div ></div>
+            <div></div>
           </Col>
         </Row>
         <div className='row'>
-          <Col  onClick={leftColumDragged} xs={1} sm={1} md={3}  lg={3} style={{ paddingTop: 30, minHeight:"100vh" }}>
-            {leftColumnMatter}
+          <Col onClick={leftColumDragged} xs={1} sm={1} md={3} lg={3} style={{ paddingTop: 30, minHeight:"100vh" }}>
+            {showListColumn ? allTaskLists : leftColumnMatter}
           </Col>
           <Col xs={11} sm={11} md={9} lg={9} style={{ borderLeft: borderRight, minHeight:"100vh"}}>
-         <AddTaskFunctional />
-          <ViewSelector  />
-          <br />
-          <h2>{currentPageTitle}</h2>
-          <br />
-          <TaskListFrameWork />
+            <ViewSelector />
+            <div className="gantt-container" style={{ width: '100%' }}>
+              <TaskListFrameWork />
+            </div>
           </Col>
-
         </div>
         <Offcanvas placement='start' show={showLeftColumnOffcanvas} onHide={handleCloseOffcanvas}>
           <Offcanvas.Header closeButton>
-            <Offcanvas.Title></Offcanvas.Title>
+            <Offcanvas.Title>{t("TASKS")}</Offcanvas.Title>
           </Offcanvas.Header>
           <Offcanvas.Body>
-          <GenericListsWithStateManagement postClick={postClick}  />
+            {allTaskLists}
           </Offcanvas.Body>
         </Offcanvas>
 

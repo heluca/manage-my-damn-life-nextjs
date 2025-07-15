@@ -100,14 +100,14 @@ export const TimeFormatSetting = () =>{
         <Row style={{display: "flex", flexWrap:"wrap", alignItems: "center"}}>
             <Col  lg={6}>
             <InputGroup style={{display:"flex", justifyContent:"center", alignContent:"center"}} className="mb-3">
-                <InputGroup.Text> {t("DATE_FORMAT")}</InputGroup.Text>
-                <Form.Control onChange={dateFormatInputChanged} value={dateFormat} />
+                <InputGroup.Text id="dateFormatLabel"> {t("DATE_FORMAT")}</InputGroup.Text>
+                <Form.Control aria-labelledby="dateFormatLabel" onChange={dateFormatInputChanged} value={dateFormat} />
             </InputGroup>
             </Col>
             <Col  lg={6}>
             <InputGroup style={{display:"flex", justifyContent:"center", alignContent:"center"}} className="mb-3">
-            <InputGroup.Text>{t("TIME_FORMAT")} </InputGroup.Text>
-                <Form.Control onChange={(e)=>setTimeFormat(e.target.value)} value={timeFormat} />
+            <InputGroup.Text id="timeFormatLabel">{t("TIME_FORMAT")} </InputGroup.Text>
+                <Form.Control aria-labelledby="timeFormatLabel" onChange={(e)=>setTimeFormat(e.target.value)} value={timeFormat} />
             </InputGroup>
 
             </Col>

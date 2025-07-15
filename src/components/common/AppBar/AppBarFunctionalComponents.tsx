@@ -1,6 +1,7 @@
 
 import { useRouter } from "next/router";
 import { Button, Container, Form, NavItem, NavLink, OverlayTrigger, Spinner, Tooltip } from "react-bootstrap";
+import { SETTING_NAME_CUSTOM_LOGO, SETTING_NAME_NAVBAR_LINKS } from "@/helpers/frontend/settings";
 import React, { useEffect, useState } from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
@@ -41,21 +42,63 @@ const AppBarFunctionalComponent = ({ session}) => {
   const [installed, setInstalled] = useState(true);
   const [darkModeEnabled, setDarkModeEnabled] = useState(false);
   const [lang, setLang] = useState(getCurrentLanguage())
+  const [logoUrl, setLogoUrl] = useState("/logo.png")
+  const [customLinks, setCustomLinks] = useState<Array<{name: string, url: string, enabled: boolean}>>([])
   const {t, i18n} = useTranslation()
 
   const router = useRouter();
 
   useEffect(() => {
-    let isMounted =true
+    let isMounted = true;
     if(isMounted){
-
       checkInstallation();
       setDarkModeEnabled(isDarkModeEnabled());
+      
+      // Load custom logo if available
+      const customLogo = localStorage.getItem(SETTING_NAME_CUSTOM_LOGO);
+      if (customLogo && customLogo.trim() !== '') {
+        setLogoUrl(customLogo);
+      }
+      
+      // Load custom navbar links if available
+      const navbarLinksStr = localStorage.getItem(SETTING_NAME_NAVBAR_LINKS);
+      if (navbarLinksStr) {
+        try {
+          const links = JSON.parse(navbarLinksStr);
+          setCustomLinks(links);
+        } catch (error) {
+          console.error('Error parsing navbar links:', error);
+        }
+      }
+      
+      // Listen for logo updates
+      const handleLogoUpdate = (event) => {
+        if (event.detail && event.detail.logoUrl && event.detail.logoUrl.trim() !== '') {
+          setLogoUrl(event.detail.logoUrl);
+        } else {
+          setLogoUrl('/logo.png');
+        }
+      };
+      
+      // Listen for navbar links updates
+      const handleNavbarLinksUpdate = (event) => {
+        if (event.detail && event.detail.links) {
+          setCustomLinks(event.detail.links);
+        }
+      };
+      
+      window.addEventListener('logoUpdated', handleLogoUpdate);
+      window.addEventListener('navbarLinksUpdated', handleNavbarLinksUpdate);
+      
+      return () => {
+        isMounted = false;
+        window.removeEventListener('logoUpdated', handleLogoUpdate);
+        window.removeEventListener('navbarLinksUpdated', handleNavbarLinksUpdate);
+      };
     }
-    return ()=>{
-      isMounted=false
-  }
-
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   useEffect(()=>{
@@ -186,19 +229,35 @@ const AppBarFunctionalComponent = ({ session}) => {
       <Navbar bg="primary" variant="dark" className="nav-pills nav-fill" style={{ padding: 20 }} sticky="top" expand="lg">
         <Navbar.Brand onClick={logoClicked}>
           <Image
-            src="/logo.png"
+            src={logoUrl}
             width="30"
             height="30"
             className="d-inline-block align-top"
             alt="Manage my Damn Life"
+            onError={() => setLogoUrl("/logo.png")} // Fallback to default logo if custom one fails to load
           />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse className="justify-content-end" id="basic-navbar-nav">
           <Nav style={{ display: "flex", margin: 5, justifyContent: "space-evenly", alignItems: "center"  }} >
             <Link style={{ color: "white", textDecoration: "none" }} href="/">{t("HOME")}</Link> &nbsp; &nbsp;
-            <Link style={{ color: "white", textDecoration: "none" }} href="/tasks/list">{t("TASK_VIEW")}</Link>&nbsp; &nbsp;
-            <Link style={{ color: "white", textDecoration: "none" }} href="/calendar/view">{t("CALENDAR_VIEW")}</Link>
+            <Link style={{ color: "white", textDecoration: "none" }} href="/calendar/view">{t("CALENDAR")}</Link>&nbsp; &nbsp;
+            <Link style={{ color: "white", textDecoration: "none" }} href="/tasks/list">{t("TASKS")}</Link>
+            {customLinks.map((link, index) => (
+              link.enabled && link.name && link.url ? (
+                <React.Fragment key={`custom-link-${index}`}>
+                  &nbsp; &nbsp;
+                  <a 
+                    style={{ color: "white", textDecoration: "none" }} 
+                    href={link.url.startsWith('http') ? link.url : `https://${link.url}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {link.name}
+                  </a>
+                </React.Fragment>
+              ) : null
+            ))}
             <Nav.Item>
               <Dropdown style={{ color: "white" }} as={NavItem}>
                 <Dropdown.Toggle style={{ color: "white" }} as={NavLink}>
