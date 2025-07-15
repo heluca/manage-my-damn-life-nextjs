@@ -46,6 +46,12 @@ COMBINEDCOMMITMESSAGE
 config/config.json
 package-withSequelize.json
 
+# Database files
+database/
+*.sqlite
+*.sqlite3
+*.db
+
 temp/
 *.backup
 #Sequelise Temporary Ignore list
@@ -57,5 +63,8 @@ temp/
 # src/helpers/models.ts
 # .sequelizerc
 
+# Environment files
 .env
-env.local
+.env.local
+.env.production
+.env.development
