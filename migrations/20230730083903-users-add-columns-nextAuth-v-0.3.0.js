@@ -20,8 +20,9 @@ module.exports = {
         queryInterface.addColumn("users", "name",{
           type: Sequelize.DataTypes.STRING      
         }, {transaction: t}),
-        queryInterface.addColumn("users", "email_verified",{
-          type: Sequelize.DataTypes.STRING,    
+        queryInterface.addColumn("users", "emailVerified",{
+          type: Sequelize.DataTypes.DATE,
+          allowNull: true    
         }, {transaction: t}),
         queryInterface.addColumn("users", "image",{
           type: Sequelize.DataTypes.STRING,       
@@ -41,7 +42,7 @@ module.exports = {
         queryInterface.removeColumn("users", "session_token",{transaction:t}),
         queryInterface.removeColumn("users", "expires",{transaction:t}),
         queryInterface.removeColumn("users", "name",{transaction:t}),
-        queryInterface.removeColumn("users", "email_verified",{transaction:t}),
+        queryInterface.removeColumn("users", "emailVerified",{transaction:t}),
         queryInterface.removeColumn("users", "image",{transaction:t})
 
         

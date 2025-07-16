@@ -14,8 +14,7 @@ export interface usersAttributes {
   expires?:Date;
   session_token?:string;
   name?:string;
-  email_verified?:string;
-  emailVerified?: string;
+  emailVerified?: Date;
   image?:string    
 
 }
@@ -38,8 +37,7 @@ export class users extends Model<usersAttributes, usersCreationAttributes> imple
   expires?:Date;
   session_token?:string;
   name?:string;
-  email_verified?:string;
-  emailVerified?: string;
+  emailVerified?: Date;
   image?:string    
 
 
@@ -94,13 +92,10 @@ export class users extends Model<usersAttributes, usersCreationAttributes> imple
     name:{
       type: Sequelize.DataTypes.STRING      
     },
-    email_verified:{
-      type: Sequelize.DataTypes.STRING,    
-    },
-    emailVerified: { type: DataTypes.DATE,
+    emailVerified: { 
+      type: DataTypes.DATE,
       allowNull: true
-
-     },
+    },
     image:{
       type: Sequelize.DataTypes.STRING,       
 

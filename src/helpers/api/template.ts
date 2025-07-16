@@ -28,3 +28,15 @@ return await template_Model.destroy({
     },
   });
 }
+
+export async function updateTemplateInDB(id, name, data, type, userid) {
+  return await template_Model.update(
+    { name: name, data: data, type: type },
+    {
+      where: {
+        id: parseInt(id),
+        userid: userid.toString()
+      },
+    }
+  );
+}

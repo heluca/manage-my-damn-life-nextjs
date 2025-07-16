@@ -1,5 +1,5 @@
 import { getCaldavClient } from "@/helpers/api/cal/caldav";
-import { User } from "@/helpers/api/classes/User";
+import { Calendars } from "@/helpers/api/classes/Calendars";
 import { getUserIDFromLogin, middleWareForAuthorisation } from "@/helpers/api/user";
 
 export default async function handler(req, res) {
@@ -14,16 +14,21 @@ export default async function handler(req, res) {
                 return res.status(401).json({ success: false, data: { message: 'PLEASE_LOGIN'} });
             }
 
-            const userObj = new User(userid);
-            const calendar = await userObj.getCalendarFromID(req.query.calendar_id);
+            // Get calendar directly using the Calendars class
+            const calendar = await Calendars.getFromID(req.query.calendar_id);
             
             if(calendar) {
                 try {
                     const client = await getCaldavClient(req.query.caldav_accounts_id);
                     if(client) {
                         // Fetch all calendar objects directly
+                        // Make sure calendar.url is defined before using it
+                        if (!calendar || !calendar.url) {
+                            return res.status(404).json({ success: false, data: { message: 'CALENDAR_URL_NOT_FOUND'} });
+                        }
+                        
                         const calendarObjects = await client.fetchCalendarObjects({
-                            calendar: {url: calendar.url},
+                            calendar: {url: calendar.url as string},
                             filters: [
                                 {
                                     'comp-filter': {

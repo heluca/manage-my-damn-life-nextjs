@@ -5,10 +5,11 @@ module.exports = {
         return queryInterface.sequelize.transaction(t => {
             return Promise.all([
       
-              queryInterface.addColumn("users", "emailVerified",{
-                type: Sequelize.DATE,
-              },
-              {transaction: t}),
+              // emailVerified column is now added in the consolidated migration
+              // queryInterface.addColumn("users", "emailVerified",{
+              //   type: Sequelize.DATE,
+              // },
+              // {transaction: t}),
               queryInterface.addColumn("sessions", "sessionToken",{
                 type: Sequelize.STRING,
                 unique: "sessionToken",
@@ -36,7 +37,8 @@ module.exports = {
     async down(queryInterface, Sequelize) {
         return queryInterface.sequelize.transaction(t => {
             return Promise.all([
-              queryInterface.removeColumn("users", "emailVerified",{transaction:t}),
+              // emailVerified column is now handled in the consolidated migration
+              // queryInterface.removeColumn("users", "emailVerified",{transaction:t}),
               queryInterface.removeColumn("sessions", "sessionToken",{transaction:t}),
               queryInterface.removeColumn("sessions", "userId",{transaction:t}),
               queryInterface.dropTable('verification_tokens',{transaction:t}),
